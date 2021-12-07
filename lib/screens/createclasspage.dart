@@ -12,14 +12,24 @@ class CreateClassroomPage extends StatefulWidget {
 }
 
 class _CreateClassroomPageState extends State<CreateClassroomPage> {
-  final _date = TextEditingController();
-  final _time = TextEditingController();
   final _title = TextEditingController();
   final _url = TextEditingController();
   final _notify = TextEditingController();
   final _description = TextEditingController();
   final format = DateFormat("yyyy-MM-dd HH:mm");
   Classroom? classroom = null;
+
+  @override
+  void initState() {
+    if (widget.classroom == null) {
+      classroom = Classroom.fromParams(
+          '<No title>', '<No description>', DateTime.now(), 0, '', 2);
+    } else {
+      classroom = widget.classroom!;
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,17 +84,7 @@ class _CreateClassroomPageState extends State<CreateClassroomPage> {
                 buildDaySelector('Sun', 6),
               ],
             ),
-            const SizedBox(height: 15.0),
-            TextField(
-              autofocus: true,
-              controller: _time,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.timer_sharp),
-                filled: true,
-                labelText: 'Time',
-              ),
-            ),
-            const SizedBox(height: 15.0),
+            const SizedBox(height: 10.0),
             TextField(
               autofocus: true,
               controller: _title,
@@ -131,8 +131,6 @@ class _CreateClassroomPageState extends State<CreateClassroomPage> {
                 TextButton(
                   child: const Text('CANCEL'),
                   onPressed: () {
-                    _date.clear();
-                    _time.clear();
                     _url.clear();
                     _notify.clear();
                     _description.clear();
